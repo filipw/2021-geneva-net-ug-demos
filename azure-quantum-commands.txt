@@ -1,0 +1,38 @@
+# list workspaces
+az quantum workspace list -o table
+
+# set workspace
+az quantum workspace set -g {resource group name} -w {workspace name} -l {location} -o table       
+
+EndpointUri                                      Location    Name            ProvisioningState    ResourceGroup    StorageAccount                                                                                                                              Usable
+-----------------------------------------------  ----------  --------------  -------------------  ---------------  ------------------------------------------------------------------------------------------------------------------------------------------  --------
+https://{name}.{region}.quantum.azure.com  eastus      filip-demo8-qc  Succeeded            filip-demo8-qc   /subscriptions/{id}/resourceGroups/{resource group}/providers/Microsoft.Storage/storageAccounts/{storage account}  Yes
+
+# show targets
+az quantum target list -o table   
+
+Provider    Target-id       Current Availability    Average Queue Time (seconds)
+----------  --------------  ----------------------  ------------------------------
+ionq        ionq.qpu        Available               255
+ionq        ionq.simulator  Available               1
+
+
+# execute on a simulator
+az quantum execute --target-id ionq.simulator -o table
+
+# submit job
+az quantum job submit --target-id ionq.qpu --job-name {name} -o table
+
+Name              Id                                    Status    Target    Submission time
+----------------  ------------------------------------  --------  --------  --------------------------------
+{name}  {id}  Waiting   ionq.qpu  2021-09-02T20:39:12.307649+00:00
+
+# show jobs
+az quantum job show -o table --job-id {id}
+
+Name              Id                                    Status     Target    Submission time                   Completion time
+----------------  ------------------------------------  ---------  --------  --------------------------------  --------------------------------
+random-four-bits  {id}  Succeeded  ionq.qpu  2021-09-02T20:39:12.307649+00:00  2021-09-02T20:50:59.632000+00:00
+
+# output
+az quantum job output -o table --job-id {id}
